@@ -17,7 +17,7 @@ jobs:
       run: bash build_and_out.sh
 
     - name: Upload build output
-      uses: actions/upload-artifact@v1
+      uses: actions/upload-artifact@v4
       with:
         name: caciocavallo
         path: out
