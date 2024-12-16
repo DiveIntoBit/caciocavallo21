@@ -174,6 +174,25 @@ public class CTCRobotPeer implements RobotPeer {
     }
     
     public void keyPressUnchecked(char keychar){
+        int keycode = (int)keychar;
+        if (keycode == KeyEvent.VK_SHIFT) {
+          currentModifiers |= KeyEvent.SHIFT_MASK;
+        }
+        if (keycode == KeyEvent.VK_CAPS_LOCK){
+            if((currentModifiers & KeyEvent.SHIFT_MASK) == KeyEvent.SHIFT_MASK){
+                currentModifiers &= ~KeyEvent.SHIFT_MASK;
+            }else{
+                currentModifiers |= KeyEvent.SHIFT_MASK;
+            }
+        }
+        if (keycode == KeyEvent.VK_CONTROL) {
+          currentModifiers |= KeyEvent.CTRL_MASK;
+        }
+        if (keycode == KeyEvent.VK_ALT_GRAPH) {
+            currentModifiers |= KeyEvent.ALT_GRAPH_MASK;
+        }
+        keyEvent(keycode, KeyEvent.KEY_PRESSED);
+        
         if (keychar != KeyEvent.CHAR_UNDEFINED) {
           EventData ev = new EventData();
           ev.setSource(CTCScreen.getInstance());
@@ -202,7 +221,22 @@ public class CTCRobotPeer implements RobotPeer {
       }
         keyEvent(keycode, KeyEvent.KEY_RELEASED);
     }
- 
+
+    public void keyReleaseUnchecked(char keychar) {
+        int keycode = (int)keychar;
+        if (keycode == KeyEvent.VK_SHIFT) {
+          currentModifiers &= ~KeyEvent.SHIFT_MASK;
+        }
+        if (keycode == KeyEvent.VK_CONTROL) {
+          currentModifiers &= ~KeyEvent.CTRL_MASK;
+        }
+        if (keycode == KeyEvent.VK_ALT_GRAPH) {
+          currentModifiers &= ~KeyEvent.ALT_GRAPH_MASK;
+        }
+        keyEvent(keycode, KeyEvent.KEY_RELEASED);
+    }
+
+    
     @Override
     public int getRGBPixel(int x, int y) {
         // TODO Auto-generated method stub
