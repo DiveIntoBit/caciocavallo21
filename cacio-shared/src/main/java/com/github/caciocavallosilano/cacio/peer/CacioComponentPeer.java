@@ -767,7 +767,32 @@ class CacioComponentPeer<AWTComponentType extends Component,
     @Override
     public void setZOrder(ComponentPeer above) {
 
-        System.err.println("CacioComponentPeer::setZOrder: NOT YET IMPLEMENTED");
+        // System.err.println("CacioComponentPeer::setZOrder: NOT YET IMPLEMENTED");
+	if (!(above instanceof CacioComponentPeer)) {
+	        System.err.println("Unsupported peer type in setZOrder");
+	        return;
+	}
+	
+	CacioComponentPeer<?, ?> abovePeer = (CacioComponentPeer<?, ?>) above;
+	
+	// 获取 Swing 组件和它们的父容器
+	JComponent thisComp = this.getSwingComponent();
+	JComponent aboveComp = abovePeer.getSwingComponent();
+	
+	if (thisComp == null || aboveComp == null) {
+	    System.err.println("Cannot set Z order, one of the swing components is null");
+	    return;
+	}
+	
+	Container parent = thisComp.getParent();
+	if (parent == null || parent != aboveComp.getParent()) {
+	    System.err.println("Z-order change requires both components in the same container");
+	    return;
+	}
+	
+	int aboveIndex = parent.getComponentZOrder(aboveComp);
+	parent.setComponentZOrder(thisComp, aboveIndex + 1);
+	parent.repaint();    
     }
 
     @Override
