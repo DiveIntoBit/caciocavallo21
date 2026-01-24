@@ -32,6 +32,7 @@ import java.awt.Dialog;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GraphicsConfiguration;
 import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -328,6 +329,11 @@ class CacioWindowPeer extends CacioContainerPeer<Window, JRootPane>
     @Override
     public void setOpaque(boolean isOpaque) {
         // TODO: Implement.
+    }
+
+    @Override
+    public GraphicsConfiguration getAppropriateGraphicsConfiguration(GraphicsConfiguration gc) {
+        return gc;
     }
 
     @Override
